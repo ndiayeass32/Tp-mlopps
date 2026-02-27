@@ -1,0 +1,20 @@
+{
+    "timestamp": "2026-02-27T15:23:17.313899",
+    "task": "regression",
+    "dataset": "CarPrice_Assignment.csv",
+    "model": "Ridge(alpha=1.0)",
+    "hyperparameters": {
+        "alpha": 1.0,
+        "random_state": 42
+    },
+    "validation": {
+        "MAE": 1904.6570014272666,
+        "RMSE": 2346.0848793107357,
+        "R2": 0.8863668294563
+    },
+    "test": {
+        "MAE": 2074.169753933969,
+        "RMSE": 3460.304311758312,
+        "R2": 0.86563965589516
+    }
+}

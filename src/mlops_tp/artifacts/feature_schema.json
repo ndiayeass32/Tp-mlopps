@@ -1,0 +1,107 @@
+{
+    "dataset": "CarPrice_Assignment.csv",
+    "target": "price",
+    "n_features": 25,
+    "features": [
+        {
+            "name": "car_ID",
+            "dtype": "int64"
+        },
+        {
+            "name": "symboling",
+            "dtype": "int64"
+        },
+        {
+            "name": "CarName",
+            "dtype": "str"
+        },
+        {
+            "name": "fueltype",
+            "dtype": "str"
+        },
+        {
+            "name": "aspiration",
+            "dtype": "str"
+        },
+        {
+            "name": "doornumber",
+            "dtype": "str"
+        },
+        {
+            "name": "carbody",
+            "dtype": "str"
+        },
+        {
+            "name": "drivewheel",
+            "dtype": "str"
+        },
+        {
+            "name": "enginelocation",
+            "dtype": "str"
+        },
+        {
+            "name": "wheelbase",
+            "dtype": "float64"
+        },
+        {
+            "name": "carlength",
+            "dtype": "float64"
+        },
+        {
+            "name": "carwidth",
+            "dtype": "float64"
+        },
+        {
+            "name": "carheight",
+            "dtype": "float64"
+        },
+        {
+            "name": "curbweight",
+            "dtype": "int64"
+        },
+        {
+            "name": "enginetype",
+            "dtype": "str"
+        },
+        {
+            "name": "cylindernumber",
+            "dtype": "str"
+        },
+        {
+            "name": "enginesize",
+            "dtype": "int64"
+        },
+        {
+            "name": "fuelsystem",
+            "dtype": "str"
+        },
+        {
+            "name": "boreratio",
+            "dtype": "float64"
+        },
+        {
+            "name": "stroke",
+            "dtype": "float64"
+        },
+        {
+            "name": "compressionratio",
+            "dtype": "float64"
+        },
+        {
+            "name": "horsepower",
+            "dtype": "int64"
+        },
+        {
+            "name": "peakrpm",
+            "dtype": "int64"
+        },
+        {
+            "name": "citympg",
+            "dtype": "int64"
+        },
+        {
+            "name": "highwaympg",
+            "dtype": "int64"
+        }
+    ]
+}

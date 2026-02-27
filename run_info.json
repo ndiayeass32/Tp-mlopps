@@ -1,0 +1,37 @@
+{
+    "dataset": "CarPrice_Assignment.csv",
+    "shape": [
+        205,
+        26
+    ],
+    "target": "price",
+    "split": {
+        "train": 0.7,
+        "validation": 0.15,
+        "test": 0.15
+    },
+    "random_state": 42,
+    "model": "Ridge(alpha=1.0)",
+    "preprocessing": {
+        "numeric": [
+            "median imputer",
+            "standard scaler"
+        ],
+        "categorical": [
+            "most_frequent imputer",
+            "onehot (handle_unknown=ignore)"
+        ]
+    },
+    "metrics": {
+        "validation": {
+            "MAE": 1904.6570014272666,
+            "RMSE": 2346.0848793107357,
+            "R2": 0.8863668294563
+        },
+        "test": {
+            "MAE": 2074.169753933969,
+            "RMSE": 3460.304311758312,
+            "R2": 0.86563965589516
+        }
+    }
+}
