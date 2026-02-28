@@ -8,7 +8,8 @@ from fastapi.testclient import TestClient
 PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 sys.path.insert(0, PROJECT_ROOT)
 
-from src.api import app  # noqa: E402
+
+from src.mlops_tp.api import app
 
 
 ARTIFACTS_DIR = os.path.join(PROJECT_ROOT, "src", "mlops_tp", "artifacts")

@@ -9,7 +9,7 @@ import sys
 
 PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 
-TRAIN_SCRIPT = os.path.join(PROJECT_ROOT, "src", "train.py")
+TRAIN_SCRIPT = os.path.join(PROJECT_ROOT, "src", "mlops_tp", "train.py")
 ARTIFACTS_DIR = os.path.join(PROJECT_ROOT, "src", "mlops_tp", "artifacts")
 MODEL_PATH = os.path.join(ARTIFACTS_DIR, "model.joblib")
 METRICS_PATH = os.path.join(ARTIFACTS_DIR, "metrics.json")
