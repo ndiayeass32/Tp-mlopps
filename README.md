@@ -45,4 +45,3 @@ pip install -r requirements.txt
 python -m src.mlops_tp.train
 uvicorn src.mlops_tp.api:app --reload
 
-Salut Poto
