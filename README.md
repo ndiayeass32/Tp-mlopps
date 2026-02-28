@@ -44,3 +44,5 @@ source .venv/bin/activate  # ou .venv\Scripts\activate sous Windows
 pip install -r requirements.txt
 python -m src.mlops_tp.train
 uvicorn src.mlops_tp.api:app --reload
+
+Salut Poto
