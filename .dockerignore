@@ -1,0 +1,7 @@
+.venv
+.venv_ydata
+__pycache__
+*.pyc
+data/
+eda_report.html
+.gitss
