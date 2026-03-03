@@ -70,7 +70,7 @@ def get_feature_list(schema: dict) -> list[dict]:
 # UI
 # =========================
 st.set_page_config(page_title="TP MLOps - Car Price Prediction", layout="wide")
-st.title("TP MLOps - Car Price Prediction 🚗💸")
+st.title("TP MLOps - Car Price Prediction 🚗")
 st.caption("Dashboard EDA + métriques + prédiction (Streamlit)")
 
 df = load_data(DATA_PATH) if DATA_PATH.exists() else None
@@ -79,14 +79,14 @@ schema = load_json(SCHEMA_PATH)
 model = load_model(MODEL_PATH)
 
 st.sidebar.header("Navigation")
-page = st.sidebar.radio("Aller à :", ["📊 Dataset & EDA", "📈 Modèle & Métriques", "🤖 Prédiction"])
+page = st.sidebar.radio("Aller à :", ["Dataset & EDA", " Modèle & Métriques", " Prédiction"])
 
 
 # =========================
 # PAGE 1: EDA
 # =========================
-if page == "📊 Dataset & EDA":
-    st.subheader("📊 Dataset")
+if page == "Dataset & EDA":
+    st.subheader(" Dataset")
 
     if df is None:
         st.error(f"Dataset introuvable : {DATA_PATH}")
@@ -101,11 +101,11 @@ if page == "📊 Dataset & EDA":
     st.dataframe(df.head(20), use_container_width=True)
 
     st.divider()
-    st.subheader("📌 Statistiques rapides")
+    st.subheader(" Statistiques rapides")
     st.dataframe(df.describe(include="all").transpose(), use_container_width=True)
 
     st.divider()
-    st.subheader("📉 Graphiques (choix)")
+    st.subheader(" Graphiques (choix)")
 
     target_col = "price" if "price" in df.columns else None
     if not target_col:
@@ -157,16 +157,16 @@ if page == "📊 Dataset & EDA":
 # =========================
 # PAGE 2: METRICS / MODEL
 # =========================
-elif page == "📈 Modèle & Métriques":
-    st.subheader("📈 Modèle & Artefacts")
+elif page == "Modèle & Métriques":
+    st.subheader("Modèle & Artefacts")
 
     c1, c2, c3 = st.columns(3)
-    c1.metric("model.joblib", "✅" if model is not None else "❌")
-    c2.metric("metrics.json", "✅" if metrics is not None else "❌")
-    c3.metric("feature_schema.json", "✅" if schema is not None else "❌")
+    c1.metric("model.joblib",  if model is not None else)
+    c2.metric("metrics.json",  if metrics is not None else)
+    c3.metric("feature_schema.json",  if schema is not None else)
 
     st.divider()
-    st.subheader("📌 Métriques (selon ton train.py)")
+    st.subheader(" Métriques (selon ton train.py)")
 
     if not metrics:
         st.warning(f"metrics.json introuvable : {METRICS_PATH}")
@@ -188,7 +188,7 @@ elif page == "📈 Modèle & Métriques":
         st.json(metrics)
 
     st.divider()
-    st.subheader("🧾 Feature schema (features + dtypes)")
+    st.subheader(" Feature schema (features + dtypes)")
 
     feats = get_feature_list(schema)
     if not feats:
@@ -277,7 +277,7 @@ else:
                             value=float(meanv),
                         )
 
-        submitted = st.form_submit_button("Predict 🚀")
+        submitted = st.form_submit_button("Predict ")
 
     if submitted:
         X = pd.DataFrame([inputs])
@@ -291,7 +291,7 @@ else:
 
         try:
             pred = model.predict(X)
-            st.success(f"✅ Prix prédit : **{float(pred[0]):.2f}**")
+            st.success(f" Prix prédit : **{float(pred[0]):.2f}**")
             st.caption("Le modèle est ton Pipeline (preprocess + Ridge) → donc pas besoin d’encoder à la main.")
         except Exception as e:
             st.error("Erreur pendant la prédiction.")
