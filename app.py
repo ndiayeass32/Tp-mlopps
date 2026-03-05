@@ -132,16 +132,33 @@ if page == "Dataset & EDA":
     plt.ylabel("price")
     st.pyplot(fig, clear_figure=True)
 
-    # Boxplot configurable
-    if len(cat_cols) > 0:
-        st.markdown("### Boxplot (catégorielle)")
-        cat = st.selectbox("Choisir une variable catégorielle :", cat_cols)
-        fig = plt.figure(figsize=(10, 4))
-        df.boxplot(column=target_col, by=cat)
-        plt.title("")
-        plt.suptitle("")
-        plt.xticks(rotation=30, ha="right")
-        st.pyplot(fig, clear_figure=True)
+
+        # Boxplot configurable (ROBUSTE)
+    st.markdown("### Boxplot (catégorielle)")
+
+    if len(cat_cols) == 0:
+        st.info("Aucune colonne catégorielle trouvée pour faire un boxplot.")
+    else:
+        cat = st.selectbox("Choisir une variable catégorielle :", cat_cols, key="box_cat")
+
+        # sécuriser le type de price
+        df[target_col] = pd.to_numeric(df[target_col], errors="coerce")
+
+        tmp = df[[cat, target_col]].dropna()
+
+        if tmp.empty:
+            st.warning("Pas assez de données pour afficher le boxplot (valeurs manquantes).")
+        else:
+            fig, ax = plt.subplots(figsize=(10, 4))
+            tmp.boxplot(column=target_col, by=cat, ax=ax)
+
+            ax.set_title("")       # enlève titre auto
+            ax.set_xlabel(cat)
+            ax.set_ylabel(target_col)
+            plt.suptitle("")       # enlève "Boxplot grouped by ..."
+            plt.xticks(rotation=30, ha="right")
+
+            st.pyplot(fig)
 
     # Correlation (numériques)
     st.markdown("### Corrélation (variables numériques)")
