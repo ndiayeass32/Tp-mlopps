@@ -1,17 +1,18 @@
 from pathlib import Path
 
-# Chemin vers le dossier mlops_tp
-BASE_DIR = Path(__file__).resolve().parent.parent
+# Dossier du package mlops_tp
+PKG_DIR = Path(__file__).resolve().parent
 
-# Data
-DATA_PATH = BASE_DIR.parent.parent / "data" / "CarPrice_Assignment.csv"
-
-# Artifacts
-ARTIFACTS_DIR = BASE_DIR / "artifacts"
+# Artifacts dans mlops_tp/artifacts
+ARTIFACTS_DIR = PKG_DIR / "artifacts"
 MODEL_PATH = ARTIFACTS_DIR / "model.joblib"
 METRICS_PATH = ARTIFACTS_DIR / "metrics.json"
 SCHEMA_PATH = ARTIFACTS_DIR / "feature_schema.json"
 RUN_INFO_PATH = ARTIFACTS_DIR / "run_info.json"
+
+# Dataset (dans /data à la racine)
+PROJECT_ROOT = PKG_DIR.parent.parent   # .../TP_MLOPPS
+DATA_PATH = PROJECT_ROOT / "data" / "CarPrice_Assignment.csv"
 
 TARGET_COLUMN = "price"
 TEST_SIZE = 0.2

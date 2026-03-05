@@ -66,3 +66,9 @@ python -m src.mlops_tp.train
 uvicorn src.mlops_tp.api:app --host 0.0.0.0 --port 8000 --reload
 
 Swagger : http://localhost:8000/docs
+
+J’ai installé la bibliothèque YData afin d’obtenir un aperçu exploratoire des données et d’analyser leurs caractéristiques.
+
+J’ai ensuite créé un Dockerfile permettant de construire un conteneur Docker avec les commandes de base nécessaires à l’exécution du projet.
+
+Enfin, l’ensemble du projet a été versionné et push sur mon dépôt GitHub personnel : ndiayeass.

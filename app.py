@@ -161,9 +161,10 @@ elif page == "Modèle & Métriques":
     st.subheader("Modèle & Artefacts")
 
     c1, c2, c3 = st.columns(3)
-    c1.metric("model.joblib",  if model is not None else)
-    c2.metric("metrics.json",  if metrics is not None else)
-    c3.metric("feature_schema.json",  if schema is not None else)
+
+    c1.metric("model.joblib", "OK" if model is not None else "Missing")
+    c2.metric("metrics.json", "OK" if metrics is not None else "Missing")
+    c3.metric("feature_schema.json", "OK" if schema is not None else "Missing")
 
     st.divider()
     st.subheader(" Métriques (selon ton train.py)")

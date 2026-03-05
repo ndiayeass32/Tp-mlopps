@@ -13,31 +13,31 @@
         },
         {
             "name": "CarName",
-            "dtype": "str"
+            "dtype": "object"
         },
         {
             "name": "fueltype",
-            "dtype": "str"
+            "dtype": "object"
         },
         {
             "name": "aspiration",
-            "dtype": "str"
+            "dtype": "object"
         },
         {
             "name": "doornumber",
-            "dtype": "str"
+            "dtype": "object"
         },
         {
             "name": "carbody",
-            "dtype": "str"
+            "dtype": "object"
         },
         {
             "name": "drivewheel",
-            "dtype": "str"
+            "dtype": "object"
         },
         {
             "name": "enginelocation",
-            "dtype": "str"
+            "dtype": "object"
         },
         {
             "name": "wheelbase",
@@ -61,11 +61,11 @@
         },
         {
             "name": "enginetype",
-            "dtype": "str"
+            "dtype": "object"
         },
         {
             "name": "cylindernumber",
-            "dtype": "str"
+            "dtype": "object"
         },
         {
             "name": "enginesize",
@@ -73,7 +73,7 @@
         },
         {
             "name": "fuelsystem",
-            "dtype": "str"
+            "dtype": "object"
         },
         {
             "name": "boreratio",
