@@ -40,3 +40,7 @@ eda_report_full.html
 # Docker (optional)
 # =============================
 *.log
+
+mlflow.db
+mlartifacts/
+*.pdf
