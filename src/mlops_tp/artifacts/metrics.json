@@ -1,5 +1,5 @@
 {
-    "timestamp": "2026-03-05T11:00:09.912965",
+    "timestamp": "2026-03-26T09:41:28.987928",
     "task": "regression",
     "dataset": "CarPrice_Assignment.csv",
     "model": "Ridge(alpha=1.0)",

@@ -1,0 +1,34 @@
+version: "3.8"
+
+services:
+
+  api:
+    build: .
+    container_name: carprice_api
+    ports:
+      - "8000:8000"
+    environment:
+      - MLFLOW_TRACKING_URI=http://mlflow:5000
+    depends_on:
+      - mlflow
+    volumes:
+      - ./src/mlops_tp/artifacts:/app/src/mlops_tp/artifacts
+
+  mlflow:
+    image: python:3.11-slim
+    container_name: carprice_mlflow
+    working_dir: /mlflow
+    ports:
+      - "5000:5000"
+    volumes:
+      - mlflow_data:/mlflow
+    command: >
+      bash -c "pip install mlflow --quiet &&
+               mlflow server
+               --host 0.0.0.0
+               --port 5000
+               --backend-store-uri sqlite:///mlflow.db
+               --default-artifact-root /mlflow/artifacts"
+
+volumes:
+  mlflow_data:
