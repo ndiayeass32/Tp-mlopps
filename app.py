@@ -12,7 +12,7 @@ import matplotlib.pyplot as plt
 # Paths
 # =========================
 PROJECT_ROOT = Path(__file__).resolve().parent
-DATA_PATH = PROJECT_ROOT / "data" / "CarPrice_Assignment.csv"
+DATA_PATH = PROJECT_ROOT / "data" / "bmw.csv"
 
 ARTIFACTS_DIR = PROJECT_ROOT / "src" / "mlops_tp" / "artifacts"
 MODEL_PATH = ARTIFACTS_DIR / "model.joblib"
