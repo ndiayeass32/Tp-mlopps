@@ -162,3 +162,10 @@ sur le test. Il faut regarder plusieurs métriques sur les données de test.
 Q28 — Configuration retenue à ce stade ?
 On retient RandomForest avec MinMaxScaler et imputation median car c'est la config
 qui donne les meilleurs résultats (R²=0.934, MAE=1633€) sans signe de surapprentissage.
+
+
+## Changement de Dataset BMW
+
+Remplacement du dataset CarPrice_Assignment.csv (205 lignes) par le dataset BMW
+(10 000+ lignes) pour améliorer la qualité du modèle. Le passage à RandomForest
+sur ce nouveau dataset a permis d'atteindre un R²=0.953 contre 0.934 précédemment.

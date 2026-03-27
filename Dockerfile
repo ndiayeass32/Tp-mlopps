@@ -15,4 +15,4 @@ RUN mkdir -p /mlflow
 EXPOSE 8000
 EXPOSE 5000
 
-CMD ["uvicorn", "src.mlops_tp.api:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["sh", "-c", "uvicorn src.mlops_tp.api:app --host 0.0.0.0 --port ${PORT:-8000}"]

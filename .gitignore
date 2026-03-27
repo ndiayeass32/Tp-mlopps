@@ -23,7 +23,6 @@ Thumbs.db
 # =============================
 # ML Artifacts
 # =============================
-src/mlops_tp/artifacts/*.joblib
 src/mlops_tp/artifacts/*.html
 src/mlops_tp/artifacts/*.pkl
 
