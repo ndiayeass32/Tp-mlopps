@@ -6,7 +6,12 @@ WORKDIR /app
 COPY requirements.txt .
 
 RUN pip install --no-cache-dir --upgrade pip
-RUN grep -v "pywin32" requirements.txt | pip install --no-cache-dir -r /dev/stdin
+
+RUN pip install --no-cache-dir -r requirements.txt || true
+RUN pip install --no-cache-dir uvicorn fastapi joblib scikit-learn pandas numpy mlflow
+
+COPY requirements-docker.txt .
+RUN pip install --no-cache-dir -r requirements-docker.txt
 
 COPY . .
 
