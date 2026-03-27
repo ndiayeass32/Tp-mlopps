@@ -19,6 +19,9 @@ from sklearn.impute import SimpleImputer
 from sklearn.linear_model import Ridge
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 
+from sklearn.linear_model import Ridge
+from sklearn.ensemble import RandomForestRegressor  
+
 
 # ============================================
 # 1) Constantes & chemins
@@ -29,7 +32,7 @@ TARGET = "price"
 ARTIFACTS_DIR = os.path.join("src", "mlops_tp", "artifacts")
 os.makedirs(ARTIFACTS_DIR, exist_ok=True)
 
-DATA_PATH = os.path.join("data", "CarPrice_Assignment.csv")
+DATA_PATH = os.path.join("data", "bmw.csv")
 
 
 # ============================================
@@ -82,7 +85,7 @@ preprocessor = ColumnTransformer(
 
 model = Pipeline(steps=[
     ("preprocess", preprocessor),
-    ("regressor", Ridge(alpha=1.0, random_state=RANDOM_STATE))
+    ("regressor", RandomForestRegressor(n_estimators=100, random_state=RANDOM_STATE))
 ])
 
 
