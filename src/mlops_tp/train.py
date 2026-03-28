@@ -92,7 +92,7 @@ model = Pipeline(steps=[
 # ============================================
 # 8. Créer / sélectionner l'expérience MLflow
 # ============================================
-mlflow.set_tracking_uri("http://localhost:5000")
+mlflow.set_tracking_uri(os.environ.get("MLFLOW_TRACKING_URI", "sqlite:///mlflow.db"))
 mlflow.set_experiment("CarPrice_Ridge")
 
 # ============================================

@@ -5,7 +5,7 @@ import pandas as pd
 
 PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 
-DATA_PATH = os.path.join(PROJECT_ROOT, "data", "CarPrice_Assignment.csv")
+DATA_PATH = os.path.join(PROJECT_ROOT, "data", "bmw.csv")
 MODEL_PATH = os.path.join(PROJECT_ROOT, "src", "mlops_tp", "artifacts", "model.joblib")
 
 
