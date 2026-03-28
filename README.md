@@ -75,7 +75,11 @@ Enfin, l’ensemble du projet a été versionné et push sur mon dépôt GitHub 
 
 
 
+
 TP 2 : Intégration de MLflow dans un projet ML
+
+.\.venv\Scripts\Activate.ps1
+mlflow ui --host 127.0.0.1 --port 5000
 
 Q1 — Qu'appelle-t-on une expérience dans MLflow ?
 Une expérience regroupe plusieurs runs liés au même objectif. Dans notre cas on a
