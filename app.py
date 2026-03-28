@@ -1,5 +1,4 @@
 import json
-import requests
 from pathlib import Path
 
 import numpy as np
@@ -19,8 +18,6 @@ ARTIFACTS_DIR = PROJECT_ROOT / "src" / "mlops_tp" / "artifacts"
 MODEL_PATH = ARTIFACTS_DIR / "model.joblib"
 METRICS_PATH = ARTIFACTS_DIR / "metrics.json"
 SCHEMA_PATH = ARTIFACTS_DIR / "feature_schema.json"
-
-API_URL = "https://tp-mlopps.onrender.com/predict"
 
 
 # =========================
@@ -47,6 +44,7 @@ def load_model(path: Path):
 
 
 def is_numeric_dtype_str(dtype_str: str) -> bool:
+    """dtype_str comes from str(df[col].dtype) like 'int64', 'float64', 'object'."""
     dtype_str = (dtype_str or "").lower()
     return ("int" in dtype_str) or ("float" in dtype_str) or ("bool" in dtype_str)
 
@@ -59,6 +57,7 @@ def safe_float(x, default=0.0):
 
 
 def get_feature_list(schema: dict) -> list[dict]:
+    """Return features as list of dicts: [{'name':..., 'dtype':...}, ...]"""
     if not schema:
         return []
     feats = schema.get("features")
@@ -116,6 +115,7 @@ if page == "Dataset & EDA":
     numeric_cols = df.select_dtypes(include=[np.number]).columns.tolist()
     cat_cols = df.select_dtypes(exclude=[np.number]).columns.tolist()
 
+    # Distribution target
     st.markdown("### Distribution de `price`")
     fig = plt.figure()
     plt.hist(df[target_col].dropna(), bins=30)
@@ -123,6 +123,7 @@ if page == "Dataset & EDA":
     plt.ylabel("count")
     st.pyplot(fig, clear_figure=True)
 
+    # Scatter configurable
     st.markdown("### Scatter (numérique vs price)")
     xcol = st.selectbox("Choisir une variable numérique :", [c for c in numeric_cols if c != target_col])
     fig = plt.figure()
@@ -131,27 +132,35 @@ if page == "Dataset & EDA":
     plt.ylabel("price")
     st.pyplot(fig, clear_figure=True)
 
+
+        # Boxplot configurable (ROBUSTE)
     st.markdown("### Boxplot (catégorielle)")
 
     if len(cat_cols) == 0:
         st.info("Aucune colonne catégorielle trouvée pour faire un boxplot.")
     else:
         cat = st.selectbox("Choisir une variable catégorielle :", cat_cols, key="box_cat")
+
+        # sécuriser le type de price
         df[target_col] = pd.to_numeric(df[target_col], errors="coerce")
+
         tmp = df[[cat, target_col]].dropna()
 
         if tmp.empty:
-            st.warning("Pas assez de données pour afficher le boxplot.")
+            st.warning("Pas assez de données pour afficher le boxplot (valeurs manquantes).")
         else:
             fig, ax = plt.subplots(figsize=(10, 4))
             tmp.boxplot(column=target_col, by=cat, ax=ax)
-            ax.set_title("")
+
+            ax.set_title("")       # enlève titre auto
             ax.set_xlabel(cat)
             ax.set_ylabel(target_col)
-            plt.suptitle("")
+            plt.suptitle("")       # enlève "Boxplot grouped by ..."
             plt.xticks(rotation=30, ha="right")
+
             st.pyplot(fig)
 
+    # Correlation (numériques)
     st.markdown("### Corrélation (variables numériques)")
     corr = df[numeric_cols].corr(numeric_only=True)
     fig = plt.figure(figsize=(10, 6))
@@ -169,6 +178,7 @@ elif page == "Modèle & Métriques":
     st.subheader("Modèle & Artefacts")
 
     c1, c2, c3 = st.columns(3)
+
     c1.metric("model.joblib", "OK" if model is not None else "Missing")
     c2.metric("metrics.json", "OK" if metrics is not None else "Missing")
     c3.metric("feature_schema.json", "OK" if schema is not None else "Missing")
@@ -213,19 +223,28 @@ else:
     st.subheader("🤖 Prédiction")
 
     if df is None:
-        st.error("Dataset introuvable.")
+        st.error("Dataset introuvable. Il est nécessaire pour construire les menus de catégories.")
+        st.stop()
+
+    if model is None:
+        st.error("model.joblib introuvable. Lance d'abord l'entraînement pour générer les artefacts.")
+        st.code("python -m src.mlops_tp.train", language="bash")
         st.stop()
 
     feats = get_feature_list(schema)
     if not feats:
-        st.error("feature_schema.json manquant / invalide.")
+        st.error("feature_schema.json manquant / invalide. Impossible de générer le formulaire complet.")
         st.stop()
 
+    # target removed
     target = schema.get("target", "price")
+    feature_names = [f["name"] for f in feats if f.get("name") != target]
 
     st.info("Formulaire auto généré à partir de feature_schema.json + valeurs possibles depuis le dataset.")
 
+    # Build inputs
     with st.form("predict_form"):
+        # Option: split in 2 columns
         left, right = st.columns(2)
         inputs = {}
 
@@ -238,37 +257,63 @@ else:
 
             col = left if (i % 2 == 0) else right
 
+            # If categorical: use selectbox with dataset uniques
             if not is_numeric_dtype_str(dtype):
-                options = sorted(df[name].dropna().astype(str).unique().tolist())
+                options = df[name].dropna().astype(str).unique().tolist()
+                options = sorted(options)
+                default_index = 0 if options else None
+
                 with col:
-                    inputs[name] = st.selectbox(name, options) if options else st.text_input(name, value="")
+                    if options:
+                        inputs[name] = st.selectbox(name, options, index=default_index)
+                    else:
+                        inputs[name] = st.text_input(name, value="")
             else:
+                # Numeric: choose min/max from dataset if possible
                 series = pd.to_numeric(df[name], errors="coerce")
                 minv = float(np.nanmin(series)) if np.isfinite(np.nanmin(series)) else 0.0
                 maxv = float(np.nanmax(series)) if np.isfinite(np.nanmax(series)) else 100.0
                 meanv = float(np.nanmean(series)) if np.isfinite(np.nanmean(series)) else 0.0
+
+                # if int-like
                 is_int = "int" in (dtype or "").lower()
 
                 with col:
                     if is_int:
-                        inputs[name] = st.number_input(name, min_value=int(np.floor(minv)), max_value=int(np.ceil(maxv)), value=int(np.round(meanv)), step=1)
+                        inputs[name] = st.number_input(
+                            name,
+                            min_value=int(np.floor(minv)),
+                            max_value=int(np.ceil(maxv)),
+                            value=int(np.round(meanv)),
+                            step=1,
+                        )
                     else:
-                        inputs[name] = st.number_input(name, min_value=float(minv), max_value=float(maxv), value=float(meanv))
+                        inputs[name] = st.number_input(
+                            name,
+                            min_value=float(minv),
+                            max_value=float(maxv),
+                            value=float(meanv),
+                        )
 
-        submitted = st.form_submit_button("Predict 🚗")
+        submitted = st.form_submit_button("Predict ")
 
     if submitted:
+        X = pd.DataFrame([inputs])
+
+        # Ensure numeric conversion where needed
+        for f in feats:
+            name = f.get("name")
+            dtype = f.get("dtype", "")
+            if name in X.columns and is_numeric_dtype_str(dtype):
+                X[name] = X[name].apply(safe_float)
+
         try:
-            response = requests.post(API_URL, json={"features": inputs})
-            if response.status_code == 200:
-                value = response.json()["prediction"]
-                st.success(f" Prix prédit : **{float(value):.2f} £**")
-                st.caption("Prédiction via l'API FastAPI déployée sur Render.")
-            else:
-                st.error(f"Erreur API : {response.status_code} - {response.text}")
+            pred = model.predict(X)
+            st.success(f" Prix prédit : **{float(pred[0]):.2f}**")
+            st.caption("Le modèle est ton Pipeline (preprocess + Ridge) → donc pas besoin d’encoder à la main.")
         except Exception as e:
             st.error("Erreur pendant la prédiction.")
             st.code(str(e))
 
         st.write("Entrée envoyée au modèle :")
-        st.dataframe(pd.DataFrame([inputs]), use_container_width=True)
+        st.dataframe(X, use_container_width=True)
