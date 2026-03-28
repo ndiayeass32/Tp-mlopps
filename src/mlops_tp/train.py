@@ -169,25 +169,29 @@ with mlflow.start_run():
     print("\n run_info.json mis à jour")
 
     # Log du fichier JSON comme artefact MLflow
-    mlflow.log_artifact("run_info.json")
+    if mlflow.get_tracking_uri().startswith("http"):
+        mlflow.log_artifact("run_info.json")
 
     # ============================================
     # 8) Sauvegarde des artefacts
     # ============================================
+# Log artefacts seulement si on a un vrai serveur MLflow HTTP
+    tracking_uri = mlflow.get_tracking_uri()
 
     # 8.1 model.joblib
     model_path = os.path.join(ARTIFACTS_DIR, "model.joblib")
     joblib.dump(model, model_path)
     print(" Pipeline sauvegardé :", model_path)
-    mlflow.log_artifact(model_path)
+    if tracking_uri.startswith("http"):
+        mlflow.log_artifact(model_path)
 
     # 8.2 metrics.json
     metrics_payload = {
         "timestamp": datetime.now().isoformat(),
         "task": "regression",
-        "dataset": "CarPrice_Assignment.csv",
-        "model": "Ridge(alpha=1.0)",
-        "hyperparameters": {"alpha": 1.0, "random_state": RANDOM_STATE},
+        "dataset": "bmw.csv",
+        "model": "RandomForest",
+        "hyperparameters": {"n_estimators": 100, "random_state": RANDOM_STATE},
         "validation": metrics_val,
         "test": metrics_test
     }
@@ -196,11 +200,12 @@ with mlflow.start_run():
     with open(metrics_path, "w", encoding="utf-8") as f:
         json.dump(metrics_payload, f, indent=4, ensure_ascii=False)
     print(" metrics.json généré :", metrics_path)
-    mlflow.log_artifact(metrics_path)
+    if tracking_uri.startswith("http"):
+        mlflow.log_artifact(metrics_path)
 
     # 8.3 feature_schema.json
     feature_schema = {
-        "dataset": "CarPrice_Assignment.csv",
+        "dataset": "bmw.csv",
         "target": TARGET,
         "n_features": int(len(X.columns)),
         "features": [
@@ -213,10 +218,12 @@ with mlflow.start_run():
     with open(schema_path, "w", encoding="utf-8") as f:
         json.dump(feature_schema, f, indent=4, ensure_ascii=False)
     print(" feature_schema.json généré :", schema_path)
-    mlflow.log_artifact(schema_path)
+    if tracking_uri.startswith("http"):
+        mlflow.log_artifact(schema_path)
 
-    # ============================================
+  # ============================================
     # 12. Enregistrer le modèle dans MLflow
     # ============================================
-    mlflow.sklearn.log_model(model, "model")
+    if mlflow.get_tracking_uri().startswith("http"):
+        mlflow.sklearn.log_model(model, "model")
     print("\n Run MLflow terminé ")

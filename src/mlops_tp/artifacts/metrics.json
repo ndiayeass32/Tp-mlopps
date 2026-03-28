@@ -1,10 +1,10 @@
 {
-    "timestamp": "2026-03-28T02:21:51.585903",
+    "timestamp": "2026-03-28T14:37:48.524412",
     "task": "regression",
-    "dataset": "CarPrice_Assignment.csv",
-    "model": "Ridge(alpha=1.0)",
+    "dataset": "bmw.csv",
+    "model": "RandomForest",
     "hyperparameters": {
-        "alpha": 1.0,
+        "n_estimators": 100,
         "random_state": 42
     },
     "validation": {

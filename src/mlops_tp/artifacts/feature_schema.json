@@ -1,5 +1,5 @@
 {
-    "dataset": "CarPrice_Assignment.csv",
+    "dataset": "bmw.csv",
     "target": "price",
     "n_features": 8,
     "features": [
