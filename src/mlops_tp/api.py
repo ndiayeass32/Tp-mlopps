@@ -48,7 +48,7 @@ def load_artifacts():
 
 @app.get("/health", response_model=HealthResponse)
 def health():
-    return {"status": "ok"}
+    return {"status": "ok - version 2"}
 
 @app.get("/metadata")
 def metadata():
